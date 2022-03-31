@@ -45,15 +45,7 @@
                         for (let key in data){
                             if (this.usersArr['users'] && key==='users'){
                                 this.usersArr[key]=this.usersArr[key].concat(data[key]);
-                                let elem=document.querySelector('.users__container');
-                                this.blockHeight=elem.clientHeight;
-                                this.$nextTick(()=>{
-                                    let scrollPos=elem.offsetTop+this.blockHeight;
-                                    window.scrollTo({
-                                        top:scrollPos,
-                                        behavior:'smooth'
-                                    })
-                                });
+                                this.scrollToBlock();
                                 return;
                             }
                                 this.usersArr[key]=data[key];
@@ -64,6 +56,17 @@
                     });
                 console.log(this.usersArr);
             },
+            scrollToBlock(){
+                let elem=document.querySelector('.users__container');
+                this.blockHeight=elem.clientHeight;
+                this.$nextTick(()=>{
+                    let scrollPos=elem.offsetTop+this.blockHeight;
+                    window.scrollTo({
+                        top:scrollPos,
+                        behavior:'smooth'
+                    })
+                });
+            }
         }
     }
 </script>
