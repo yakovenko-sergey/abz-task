@@ -28,7 +28,8 @@
         name: "Users",
         data(){
             return{
-                usersArr:[]
+                usersArr:[],
+                blockHeight:0
             }
         },
         mounted(){
@@ -44,15 +45,24 @@
                         for (let key in data){
                             if (this.usersArr['users'] && key==='users'){
                                 this.usersArr[key]=this.usersArr[key].concat(data[key]);
+                                let elem=document.querySelector('.users__container');
+                                this.blockHeight=elem.clientHeight;
+                                this.$nextTick(()=>{
+                                    let scrollPos=elem.offsetTop+this.blockHeight;
+                                    window.scrollTo({
+                                        top:scrollPos,
+                                        behavior:'smooth'
+                                    })
+                                });
                                 return;
                             }
                                 this.usersArr[key]=data[key];
                         }
-
-                    })
+                     })
                     .catch(ex=>{
                         console.log('parsing failed', ex)
                     });
+                console.log(this.usersArr);
             },
         }
     }
@@ -116,6 +126,6 @@
         width: 100%;
     }
     .users__more-btn{
-        margin:54px auto 0;
+        margin:54px auto 1400px;
     }
 </style>
