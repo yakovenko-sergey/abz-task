@@ -52,7 +52,22 @@
         line-height: 34px;
     }
 
-    .btn:hover{
+    .disable-btn{
+        width: 100px;
+        height: 34px;
+        background: #B4B4B4;
+        border-radius: 80px;
+        text-align: center;
+        border-radius: 80px;
+        text-align: center;
+        font-family: 'Nunito';
+        font-style: normal;
+        font-weight: 400;
+        font-size: 16px;
+        line-height: 34px;
+    }
+
+    .btn:hover,.disable-btn:hover{
         cursor: pointer;
     }
 </style>

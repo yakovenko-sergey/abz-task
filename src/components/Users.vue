@@ -33,7 +33,7 @@
             }
         },
         mounted(){
-            this.getUsers('https://frontend-test-assignment-api.abz.agency/api/v1/users?page=1&count=6');
+       //     this.getUsers('https://frontend-test-assignment-api.abz.agency/api/v1/users?page=1&count=6');
         },
         methods:{
             getUsers(url){
@@ -129,6 +129,7 @@
         width: 100%;
     }
     .users__more-btn{
-        margin:54px auto 1400px;
+        margin:49px auto 0;
+        width: 120px;
     }
 </style>

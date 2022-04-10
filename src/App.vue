@@ -3,6 +3,7 @@
   <div class="app__content">
     <vHeader/>
     <vUsers/>
+    <vSignUp/>
   </div>
   <router-view/>
 </template>
@@ -11,12 +12,14 @@
   import vMenu from "../src/components/Menu"
   import vHeader from "../src/components/Header"
   import vUsers from "../src/components/Users"
+  import vSignUp from "../src/components/Signup"
   export default {
     name: "App",
     components:{
       vMenu,
       vHeader,
-      vUsers
+      vUsers,
+      vSignUp
     }
   }
 </script>
@@ -34,7 +37,7 @@
   article, aside, canvas, details, embed,
   figure, figcaption, footer, header, hgroup,
   menu, nav, output, ruby, section, summary,
-  time, mark, audio, video {
+  time, mark, audio, video,button {
     margin: 0;
     padding: 0;
     border: 0;
