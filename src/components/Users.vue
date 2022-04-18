@@ -1,66 +1,69 @@
 <template>
     <div class="wrapper__users">
-        <div class="users__title mg-block">       <!-- Change class -->
+        <div class="users__title mg-block">
             <h1>Working with GET request</h1>
         </div>
         <div class="users__container">
-            <div class="users__item"
-                 v-for="user in usersArr['users']" :key="user">
-                <img :src="user['photo']">
-                <div class="users__name">{{user['name']}}</div>
-                <div class="users__info">
-                    <div class="user__info-item">{{user['position']}}</div>
-                    <div class="user__info-item">{{user['email']}}</div>
-                    <div class="user__info-item">{{user['phone']}}</div>
-                </div>
-            </div>
+            <vUserItem
+                    v-for="user in usersArr['users']"
+                    :key="user"
+                    :photo="user['photo']"
+                    :name="user['name']"
+                    :position="user['position']"
+                    :email="user['email']"
+                    :phone="user['phone']"
+            />
         </div>
-        <div class="users__more-btn btn"
-             @click="this.getUsers(this.usersArr['links']['next_url'])"
-             v-if="this.usersArr['page']<this.usersArr['total_pages']">
-            Show more
-        </div>
+        <vButton
+                class="users__more-btn btn"
+                :buttonText="'Show more'"
+                :enable="true"
+                @click="getUsers(this.usersArr['links']['next_url'])"
+                v-if="usersArr['page']<usersArr['total_pages']"
+        />
     </div>
 </template>
 
 <script>
+    import vButton from './Button'
+    import vUserItem from '../components/UserItem'
     export default {
         name: "Users",
+        components:{
+          vButton,
+          vUserItem
+        },
+        props: ['scrollTo','requestGET'],
         data(){
             return{
-                usersArr:[],
-                blockHeight:0
+                usersArr:[]
             }
         },
         mounted(){
-       //     this.getUsers('https://frontend-test-assignment-api.abz.agency/api/v1/users?page=1&count=6');
+            this.getUsers('https://frontend-test-assignment-api.abz.agency/api/v1/users?page=1&count=6');
         },
         methods:{
             getUsers(url){
-                fetch(url)
-                    .then((response) => {
-                        return response.json();
-                    })
-                    .then((data) => {
+                this.requestGET(url).
+                then(data=>{
+                    if (data.users){
                         for (let key in data){
                             if (this.usersArr['users'] && key==='users'){
                                 this.usersArr[key]=this.usersArr[key].concat(data[key]);
                                 this.scrollToBlock();
                                 return;
                             }
-                                this.usersArr[key]=data[key];
+                            this.usersArr[key]=data[key];
                         }
-                     })
-                    .catch(ex=>{
-                        console.log('parsing failed', ex)
-                    });
-                console.log(this.usersArr);
+                        console.log(this.usersArr);
+                    }
+                });
             },
             scrollToBlock(){
                 let elem=document.querySelector('.users__container');
-                this.blockHeight=elem.clientHeight;
+                let blockHeight=elem.clientHeight;
                 this.$nextTick(()=>{
-                    let scrollPos=elem.offsetTop+this.blockHeight;
+                    let scrollPos=elem.offsetTop+blockHeight;
                     window.scrollTo({
                         top:scrollPos,
                         behavior:'smooth'
@@ -92,41 +95,6 @@
         font-style: normal;
         font-weight: 400;
         font-size: 16px;
-    }
-    .users__item{
-        display: flex;
-        flex-direction: column;
-        align-items: center;
-        flex:1 1 28%;
-        gap: 20px;
-        padding: 20px;
-        max-width: 370px;
-        background: #FFFFFF;
-        border-radius: 10px;
-        overflow: hidden;
-    }
-    .users__item div {
-        text-align: center;
-        text-overflow: ellipsis;
-        white-space: nowrap;
-        overflow: hidden;
-        width: 100%;
-    }
-    .users__item > img{
-        width: 70px;
-        height: 70px;
-        border-radius: 100%;
-    }
-
-    .user__info-item{
-        padding:3px;
-    }
-    .users__info{
-        display: flex;
-        flex-direction: column;
-        align-items: center;
-        text-align: center;
-        width: 100%;
     }
     .users__more-btn{
         margin:49px auto 0;

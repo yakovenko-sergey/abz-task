@@ -1,9 +1,9 @@
 <template>
     <div class="input-file__wrapper">
-        <label for="file-upload" class="input-file__label" :class="inputProperty.file.changeFlag && !inputProperty.file.validation?'input-error':'input-normal'">
+        <label :for="id" class="input-file__label" :class="inputProperty.file.changeFlag && !inputProperty.file.validation?'input-error':'input-normal'">
             <p>Upload</p>{{inputProperty.file.placeholder}}
         </label>
-        <input type="file" id="file-upload" accept=".jpg,.jpeg"
+        <input type="file" :id="id" accept=".jpg,.jpeg"
                @change="inputUpdate"
         />
         <p>{{inputProperty.file.changeFlag && !inputProperty.file.validation?inputProperty.file.errorText:inputProperty.file.helperText}}</p>
@@ -16,16 +16,17 @@
         props:{
             inputsChild:{
                 type:Array
-            }
+            },
+            id:String
         },
         data(){
             return{
                 inputProperty: {
                     file: {
-                        alias: 'file',
+                        alias: 'photo',
                         placeholder: 'Upload your photo',
-                        Size:70,
                         val:'',
+                        Size:70,
                         aspectRatio:70,
                         helperText: '',
                         errorText: 'Size 70x70',
@@ -40,7 +41,6 @@
         },
         methods: {
             inputUpdate(event) {
-                this.inputProperty.file.changeFlag=true;
                 let URL = window.URL || window.webkitURL;
                 let fileData =  event.target.files[0];
                 let img = new Image();
@@ -52,7 +52,9 @@
                     else{
                         this.inputProperty.file.validation=false;
                     }
+                    this.inputProperty.file.changeFlag=true;
                     this.inputProperty.file.placeholder=fileData.name;
+                    this.inputProperty.file.val=fileData;
                     this.$emit('inputUpdate', this.inputsChild);
                 }
 
@@ -78,7 +80,7 @@
         white-space: nowrap;
         overflow: hidden;
         background: white;
-        margin: 44px 0 0;
+        margin: 33px 0 0;
     }
     .input-file__label p{
         display: inline-block;

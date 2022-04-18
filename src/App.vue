@@ -1,9 +1,9 @@
 <template>
-  <vMenu/>
+  <vMenu :scrollTo="scrollTo"/>
   <div class="app__content">
-    <vHeader/>
-    <vUsers/>
-    <vSignUp/>
+    <vHeader :scrollTo="scrollTo"/>
+    <vUsers :scrollTo="scrollTo" :requestGET="requestGET"  ref="users"/>
+    <vSignUp :requestGET="requestGET" :requestPOST="requestPOST" @renewUsers="renewUsers"/>
   </div>
   <router-view/>
 </template>
@@ -20,6 +20,47 @@
       vHeader,
       vUsers,
       vSignUp
+    },
+    data (){
+      return {
+        users:[],
+      }
+    },
+    methods:{
+      renewUsers(){
+        this.$refs.users.usersArr=[];
+        this.$refs.users.getUsers('https://frontend-test-assignment-api.abz.agency/api/v1/users?page=1&count=6');
+      },
+      userArrCallBack(data){
+        this.users=data;
+        console.log('From CHILDREN',data)
+      },
+      async requestGET (url){
+        try{
+          const response = await fetch(url);
+          const data = await response.json();
+          return data;
+        }
+        catch (e) {
+          console.log('error',e);
+        }
+      },
+      async requestPOST (url,config){
+        try{
+          const response = await fetch(url,config);
+          const data = await response.json();
+          return data;
+        }
+        catch (e) {
+          console.log('error',e);
+        }
+      },
+      scrollTo(goto){
+          document.querySelector(goto).scrollIntoView({
+          behavior: "smooth",
+          block: "start"
+        })
+      }
     }
   }
 </script>

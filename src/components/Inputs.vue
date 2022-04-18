@@ -4,7 +4,7 @@
                 @input="inputUpdate"
                 @change="inputValidate"
                 :type="inputType"
-                :placeholder="inputProperty[inputProp].placeholder"
+                :placeholder="inputPlaceholder"
                 v-model="inputProperty[inputProp].val"
                 :class="inputProperty[inputProp].changeFlag && !inputProperty[inputProp].validation?'input-error':'input-normal'"
         />
@@ -17,10 +17,16 @@
         name: "Inputs",
         props:{
             inputType:{
-                type:String
+                type:String,
+                require:true
             },
             inputProp:{
-                type:String
+                type:String,
+                require:true
+            },
+            inputPlaceholder:{
+              type:String,
+              require:true
             },
             inputsChild:{
                 type:Array
@@ -32,10 +38,8 @@
                     name:{
                         alias:'name',
                         val:'',
-                        placeholder:'Your name',
-                        aaa:'',
                         helperText:'',
-                        errorText:'at least 2-60 characters [A-z]',
+                        errorText:'The name may not be greater than 60 characters',
                         changeFlag:false,
                         validation:false,
                         pattern:'[A-z]{2,60}',
@@ -44,7 +48,6 @@
                         {
                             alias:'email',
                             val:'',
-                            placeholder:'Email',
                             helperText:'',
                             errorText:'at least 2-100 characters and format youremail@xxx.com',
                             changeFlag:false,
@@ -60,7 +63,6 @@
                         {
                             alias:'phone',
                             val:'',
-                            placeholder:'Phone',
                             helperText:'+38 (XXX) XXX - XX - XX',
                             errorText:'Format please +38 (XXX) XXX - XX - XX',
                             changeFlag:false,
@@ -71,7 +73,7 @@
             }
         },
         mounted(){
-            this.$props.inputsChild.push(this.inputProperty[this.inputProp])
+            this.$props.inputsChild.push(this.inputProperty[this.inputProp]);
         },
         methods:{
             inputUpdate(){
@@ -89,6 +91,9 @@
 </script>
 
 <style>
+    .input__wrapper{
+        user-select: none;
+    }
     .input__wrapper input{
         width:380px;
         height: 54px;

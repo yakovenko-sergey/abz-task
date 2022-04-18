@@ -4,15 +4,20 @@
             <div class="header__title">
                 <h1>Test assignment for front-end developer</h1>
                 <h2>What defines a good front-end developer is one that has skilled knowledge of HTML, CSS, JS with a vast understanding of User design thinking as they'll be building web interfaces with accessibility in mind. They should also be excited to learn, as the world of Front-End Development keeps evolving.</h2>
-                <div class="header__signup-btn btn">Sign up</div>
+                <vButton class="header__signup-btn" :buttonText="'Sign up'" @click="scrollTo('.wrapper__signup')" :enable="true"/>
             </div>
         </div>
     </div>
 </template>
 
 <script>
+    import vButton from './Button'
     export default {
         name: "Header",
+        props: ['scrollTo'],
+        components:{
+            vButton
+        }
     }
 </script>
 
