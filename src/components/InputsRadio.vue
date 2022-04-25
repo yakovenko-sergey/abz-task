@@ -41,14 +41,14 @@
                         helperText: '',
                         errorText: 'Select your position please',
                         positionId:'',
-                        changeFlag: false,
-                        validation: false,
+                        changeFlag: true,
+                        validation: true,
                     },
                 }
             }
         },
         mounted(){
-            this.$props.inputsChild.push(this.inputProperty.radio);
+            this.$props.inputsChild[this.inputProperty.radio.alias]=this.inputProperty.radio;
         },
         methods:{
             inputValidate(e){

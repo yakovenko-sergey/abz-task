@@ -25,15 +25,13 @@
     .header__content{
         display: flex;
         flex-direction: column;
-        justify-content: center;
         align-items: center;
         width: 1170px;
         height: 650px;
+        max-width: 100%;
         background: linear-gradient(0deg, rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0.5)), url("../assets/pexels-alexandr-podvalny-1227513.jpg");
     }
-    .header__title{
-        width: 380px;
-    }
+
     .header__title h1{
         font-family: 'Nunito';
         font-style: normal;
@@ -56,6 +54,33 @@
     }
     .header__signup-btn{
         margin: auto;
+    }
+
+    @media only screen and (min-width:0px) {
+        .header__content{
+            height: 500px;
+        }
+
+        .header__title{
+            width: 330px;
+            margin: 40px;
+        }
+
+    }
+
+    @media only screen and (min-width:380px) {
+        .header__title{
+            width: 380px;
+        }
+        .header__content{
+            justify-content: center;
+        }
+    }
+
+    @media only screen and (min-width:1024px) {
+        .header__content{
+            height: 650px;
+        }
     }
 
 </style>

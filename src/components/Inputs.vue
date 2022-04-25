@@ -3,12 +3,18 @@
         <input
                 @input="inputUpdate"
                 @change="inputValidate"
+                @click="phoneClick"
                 :type="inputType"
                 :placeholder="inputPlaceholder"
                 v-model="inputProperty[inputProp].val"
-                :class="inputProperty[inputProp].changeFlag && !inputProperty[inputProp].validation?'input-error':'input-normal'"
+                :class="inputProperty[inputProp].changeFlag && !inputProperty[inputProp].validation
+                ?
+                'input-error':'input-normal'"
         />
-        <p>{{inputProperty[inputProp].changeFlag && !inputProperty[inputProp].validation?inputProperty[inputProp].errorText:inputProperty[inputProp].helperText}}</p>
+        <p>{{inputProperty[inputProp].changeFlag && !inputProperty[inputProp].validation
+            ?
+            inputProperty[inputProp].errorText:inputProperty[inputProp].helperText}}
+        </p>
     </div>
 </template>
 
@@ -64,28 +70,70 @@
                             alias:'phone',
                             val:'',
                             helperText:'+38 (XXX) XXX - XX - XX',
-                            errorText:'Format please +38 (XXX) XXX - XX - XX',
+                            errorText:'The phone format is invalid (+38 (XXX) XXX - XX - XX)',
                             changeFlag:false,
                             validation:false,
-                            pattern:'^[\\+]{0,1}380([0-9]{9})$'
+                            pattern:'^[\\+]{1}38(\\(\\d+\\)+)\\s?(\\d){3}-(\\d){2}-(\\d){2}$'
                         }
                 }
             }
         },
         mounted(){
-            this.$props.inputsChild.push(this.inputProperty[this.inputProp]);
+            this.$props.inputsChild[this.inputProp]=this.inputProperty[this.inputProp];
         },
         methods:{
-            inputUpdate(){
-                this.$emit('inputUpdate',this.inputsChild);
+            phoneClick(e){
+                if (e.target.type=='tel' && e.target.value=='') e.target.value='+38'
             },
+
+            phoneMask(e){
+                let input=e.target;
+                let subInput='';
+                let inputNumbersValue = input.value.replace(/\D/g, '');
+
+                if (input.value.length != input.selectionStart) {
+                    // Editing in the middle of input, not last symbol
+                    if (e.data && /\D/g.test(e.data)) {
+                        // Attempt to input non-numeric symbol
+                        input.value = inputNumbersValue;
+                    }
+                    return;
+                }
+
+
+                subInput = input.value = "+38";
+                console.log('Length->',inputNumbersValue)
+                if (inputNumbersValue.length > 2) {
+                    subInput += '(' + inputNumbersValue .substring(2, 5);
+                }
+                if (inputNumbersValue.length > 5) {
+                    subInput += ') ' + inputNumbersValue .substring(5, 8);
+                }
+                if (inputNumbersValue.length > 8) {
+                    subInput += '-' + inputNumbersValue .substring(8, 10);
+                }
+                if (inputNumbersValue.length > 10) {
+                    subInput += '-' + inputNumbersValue .substring(10, 12);
+                }
+
+                console.log(subInput);
+                this.inputProperty.phone.val=input.value=subInput;
+            },
+
+            inputUpdate(e){
+                if (e.target.type=='tel'){
+                    this.phoneMask(e);
+                }
+               this.$emit('inputUpdate',this.inputsChild);
+            },
+
             inputValidate(){
                 this.inputProperty[this.inputProp].changeFlag=true;
                 let pattern=new RegExp(this.inputProperty[this.inputProp].pattern);
                (pattern.test(this.inputProperty[this.inputProp].val))?
                     this.inputProperty[this.inputProp].validation=true:this.inputProperty[this.inputProp].validation=false;
                 this.$emit('inputUpdate',this.inputsChild);
-            }
+            },
         }
     }
 </script>
@@ -93,9 +141,10 @@
 <style>
     .input__wrapper{
         user-select: none;
+        width:100%;
     }
     .input__wrapper input{
-        width:380px;
+        width:100%;
         height: 54px;
         box-sizing: border-box;
         border-radius: 4px;

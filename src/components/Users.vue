@@ -1,7 +1,7 @@
 <template>
     <div class="wrapper__users">
         <div class="users__title mg-block">
-            <h1>Working with GET request</h1>
+            <vH1Title :title="'Working with GET request'"/>
         </div>
         <div class="users__container">
             <vUserItem
@@ -27,11 +27,13 @@
 <script>
     import vButton from './Button'
     import vUserItem from '../components/UserItem'
+    import vH1Title from '../components/H1-Title'
     export default {
         name: "Users",
         components:{
-          vButton,
-          vUserItem
+            vButton,
+            vUserItem,
+            vH1Title
         },
         props: ['scrollTo','requestGET'],
         data(){
@@ -78,15 +80,6 @@
     .mg-block{
         margin: 140px 0 50px 0;
     }
-    .users__title h1{
-        font-family: 'Nunito';
-        font-style: normal;
-        font-weight: 400;
-        font-size: 40px;
-        line-height: 40px;
-        display: flex;
-        justify-content: center;
-    }
     .users__container{
         display: flex;
         flex-wrap: wrap;
@@ -95,9 +88,49 @@
         font-style: normal;
         font-weight: 400;
         font-size: 16px;
+        justify-content: center;
     }
     .users__more-btn{
-        margin:49px auto 0;
         width: 120px;
     }
+
+    @media only screen and (min-width:0px) {
+        .users__container {
+            gap: 20px;
+            margin: 0 25px;
+        }
+        .users__more-btn{
+            margin:49px auto 140px;
+        }
+    }
+
+    @media only screen and (min-width:380px) {
+        .users__container {
+            gap:27px;
+            margin:0;
+        }
+    }
+
+    @media only screen and (min-width:768px) {
+        .users__container {
+            gap:15px;
+        }
+    }
+
+    @media only screen and (min-width:1024px){
+        .users__container {
+            gap: 25px;
+        }
+    }
+
+    @media only screen and (min-width:1170px) {
+        .users__container {
+            gap: 30px;
+        }
+    }
+
+
+
+
+
 </style>

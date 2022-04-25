@@ -1,12 +1,17 @@
 <template>
     <div class="input-file__wrapper">
-        <label :for="id" class="input-file__label" :class="inputProperty.file.changeFlag && !inputProperty.file.validation?'input-error':'input-normal'">
+        <label :for="id" class="input-file__label" :class="inputProperty.file.changeFlag && !inputProperty.file.validation
+        ?
+        'input-error':'input-normal'">
             <p>Upload</p>{{inputProperty.file.placeholder}}
         </label>
         <input type="file" :id="id" accept=".jpg,.jpeg"
                @change="inputUpdate"
         />
-        <p>{{inputProperty.file.changeFlag && !inputProperty.file.validation?inputProperty.file.errorText:inputProperty.file.helperText}}</p>
+        <p>{{inputProperty.file.changeFlag && !inputProperty.file.validation
+            ?
+            inputProperty.file.errorText:inputProperty.file.helperText}}
+        </p>
     </div>
 </template>
 
@@ -37,7 +42,8 @@
             }
         },
         mounted(){
-            this.$props.inputsChild.push(this.inputProperty.file)
+            this.$props.inputsChild[this.inputProperty.file.alias]=this.inputProperty.file;
+           // this.$props.inputsChild.push(this.inputProperty.file)
         },
         methods: {
             inputUpdate(event) {

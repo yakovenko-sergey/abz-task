@@ -1,56 +1,62 @@
 <template>
     <div class="wrapper__signup">
-        <div class="signup__title mg-block">
-            <h1>Working with POST request</h1>
-        </div>
-        <form class="singup__form" action="#" method="post">
-            <div class="signup__container">
-                <div class="signup__input-container">
-                    <vInput
-                            :inputType="'text'"
-                            :inputProp="'name'"
-                            :inputPlaceholder="'Your name'"
-                            :inputsChild="inputs"
-                            @inputUpdate="inputUpdate"
-                    />
-                    <vInput
-                            :inputType="'text'"
-                            :inputProp="'email'"
-                            :inputPlaceholder="'Email'"
-                            :inputsChild="inputs"
-                            @inputUpdate="inputUpdate"
-                    />
-                    <vInput
-                            :inputType="'tel'"
-                            :inputProp="'phone'"
-                            :inputPlaceholder="'Phone'"
-                            :inputsChild="inputs"
-                            @inputUpdate="inputUpdate"
-                    />
-                </div>
-                <div class="signup__position-container">
-                    <div class="signup__position-title">Select your position</div>
-                    <vInputRadio
-                            :inputsChild="inputs"
-                            @inputUpdate="inputUpdate"
-                            :items="positions"
-                            :groupName="'group1'"
-                    />
-                </div>
-                    <vInputFile
-                            :inputsChild="inputs"
-                            :id="'file_1'"
-                            @inputUpdate="inputUpdate"
-                    />
-                    <vButton
-                            class="signup__submit-btn"
-                            :buttonText="'Sign up'"
-                            @click="inputChecked?addNewUser():failForm()"
-                            :enable="inputChecked"
-                    />
+        <div v-if="!successReg" class="signup__before-success">
+            <div class="signup__title">
+                <vH1Title :title="'Working with POST request'"/>
             </div>
-        </form>
-        <vSuccessBlock :Message="'User successfully registered'"/>
+            <form class="singup__form" action="#" method="post">
+                <div class="signup__container">
+                    <div class="signup__input-container">
+                        <p class="signup__error error">{{errFromServer}}</p>
+                        <vInput
+                                :inputType="'text'"
+                                :inputProp="'name'"
+                                :inputPlaceholder="'Your name'"
+                                :inputsChild="inputs"
+                                @inputUpdate="inputUpdate"
+                        />
+                        <vInput
+                                :inputType="'text'"
+                                :inputProp="'email'"
+                                :inputPlaceholder="'Email'"
+                                :inputsChild="inputs"
+                                @inputUpdate="inputUpdate"
+                        />
+                        <vInput
+                                :inputType="'tel'"
+                                :inputProp="'phone'"
+                                :inputPlaceholder="'Phone'"
+                                :inputsChild="inputs"
+                                @inputUpdate="inputUpdate"
+                        />
+                    </div>
+                    <div class="signup__position-container">
+                        <div class="signup__position-title">Select your position</div>
+                        <vInputRadio
+                                :inputsChild="inputs"
+                                @inputUpdate="inputUpdate"
+                                :items="positions"
+                                :groupName="'group1'"
+                        />
+                    </div>
+                        <vInputFile
+                                :inputsChild="inputs"
+                                :id="'file_1'"
+                                @inputUpdate="inputUpdate"
+                        />
+                        <vButton
+                                class="signup__submit-btn"
+                                :buttonText="'Sign up'"
+                                @click="inputChecked?addNewUser():failForm()"
+                                :enable="inputChecked"
+                        />
+                </div>
+            </form>
+        </div>
+        <vSuccessBlock
+                v-if="successReg"
+                :Message="'User successfully registered'"
+        />
     </div>
 </template>
 
@@ -60,6 +66,7 @@
     import vInputRadio from '../components/InputsRadio'
     import vButton from './Button'
     import vSuccessBlock from '../components/SuccessBlock'
+    import vH1Title from '../components/H1-Title'
     export default {
         name: "Signup",
         props:['requestGET','requestPOST','users'],
@@ -68,14 +75,16 @@
             vInputFile,
             vInputRadio,
             vButton,
-            vSuccessBlock
+            vSuccessBlock,
+            vH1Title
         },
         data(){
             return{
                 inputs:[],
                 inputChecked:false,
                 positions:[],
-                successNewUser:{}
+                successReg:false,
+                errFromServer:''
             }
         },
         mounted(){
@@ -86,9 +95,9 @@
         },
         methods:{
             inputUpdate(data){
-                console.log(this.inputs);
-                for (let i=0;i<this.inputs.length;i++){
-                    if (!this.inputs[i].validation){
+                console.log(data);
+                for (let key in this.inputs){
+                    if (!this.inputs[key].validation){
                         this.inputChecked=false;
                         break;
                     }
@@ -96,7 +105,6 @@
                 }
             },
             addNewUser(){
-               let token;
                this.requestGET('https://frontend-test-assignment-api.abz.agency/api/v1/token').
                then(data=>{
                        if(data.token) {
@@ -106,8 +114,10 @@
                    then(token=>{
                        let formData = new FormData();
                        let inputs=this.inputs;
-                       for (let i=0; i<inputs.length;i++){
-                           formData.append(inputs[i].alias,inputs[i].val)
+                       for (let key in this.inputs){
+                           key=='phone' ?
+                            formData.append(this.inputs[key].alias, this.inputs[key].val.replace(/[^\d]/g, '')) :
+                            formData.append(this.inputs[key].alias, this.inputs[key].val)
                        }
                    const config={
                        method: 'POST',
@@ -117,13 +127,22 @@
                    }
                    this.requestPOST('https://frontend-test-assignment-api.abz.agency/api/v1/users',config).
                    then(data=>{
-                       this.successNewUser=data;
+                       console.log(data);
                        if (data.success){
                            this.$emit('renewUsers');
+                           this.successReg=true;
+                       }
+                       else if(data.fails){
+                           let reg=new RegExp(/[\w \s \\.]+/);
+                            for (let key in data.fails){
+                                this.inputs[key].validation=false;
+                                this.inputs[key].errorText=reg.exec(data.fails[key])[0];
+                            }
                        }
                        else{
-                           console.log(this.inputs);
-                           console.log(data.fails);
+                           this.inputs['email'].validation=false;
+                           this.inputs['phone'].validation=false;
+                           this.errFromServer=data.message;
                        }
                    }).catch(e=>console.log('Error',e))
                });
@@ -133,25 +152,6 @@
                     this.inputs[i].changeFlag=true;
                 }
             }
-           // var formData = new FormData();
-            // file from input type='file'
-            // var fileField = document.querySelector('input[type="file"]');
-            // formData.append('position_id', 2);
-            // formData.append('name', 'Jhon');
-            // formData.append('email', 'Jhon@gmail.com');
-            // formData.append('phone', '+380955388485');
-            // formData.append('photo', fileField.files[0]);
-   // fetch('https://frontend-test-assignment-api.abz.agency/api/v1/users',
-            // { method: 'POST',
-            // body: formData,
-            // headers:
-            // { 'Token': token, // get token with GET api/v1/token method }, })
-            // .then(function(response) { return response.json(); })
-            // .then(function(data) { console.log(data);
-            // if(data.success) { // process success response }
-            // else { // proccess server errors } })
-            // .catch(function(error) {
-            // proccess network errors });
         }
     }
 </script>
@@ -160,19 +160,9 @@
     .mg-block{
         margin: 140px 0 50px 0;
     }
-    .signup__title h1{
-        font-family: 'Nunito';
-        font-style: normal;
-        font-weight: 400;
-        font-size: 40px;
-        line-height: 40px;
-        display: flex;
-        justify-content: center;
-    }
 
     .signup__container{
         max-width: 380px;
-        margin:0 auto 140px;
         font-family: 'Nunito';
         font-style: normal;
         font-weight: 400;
@@ -199,5 +189,42 @@
         display: flex;
         justify-content: center;
         margin: 46px auto 0;
+    }
+
+    .signup__error{
+        color:red;
+        font-size: 16px;
+    }
+
+    @media only screen and (min-width: 0px){
+        .signup__container{
+            margin: 0 20px 140px;
+        }
+    }
+
+    @media only screen and (min-width: 380px){
+        .signup__container{
+            margin: 0 auto 140px;
+        }
+    }
+
+
+    @media only screen and (min-width: 768px){
+        .signup__title{
+            margin:140px 0 0;
+        }
+
+        .input__wrapper input{
+            font-size: 15px;
+        }
+
+        .input-file__label{
+            line-height: 50px;
+            margin:37px 0 0;
+        }
+
+        .signup__submit-btn{
+            margin: 50px auto 0;
+        }
     }
 </style>

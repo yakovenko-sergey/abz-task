@@ -22,10 +22,10 @@
         display: flex;
         flex-direction: column;
         align-items: center;
-        flex:1 1 28%;
+        flex-basis: 33%;
         gap: 20px;
         padding: 20px;
-        max-width: 370px;
+        max-width: 330px;
         background: #FFFFFF;
         border-radius: 10px;
         overflow: hidden;
@@ -53,4 +53,43 @@
         text-align: center;
         width: 100%;
     }
+
+    @media only screen and (min-width:0px) {
+        .users__item {
+            flex-basis: 100%;
+        }
+    }
+
+    @media only screen and (min-width:768px) {
+        .users__item {
+            flex-basis: 40%;
+          }
+    }
+
+    @media only screen and (min-width:1024px) {
+        .users__item {
+            flex-basis: 24%;
+        }
+    }
+
+        @media only screen and (min-width:1170px) {
+            .users__item {
+                flex-basis: 28%;
+            }
+    }
+
+
+   /*
+
+    @media only screen and (max-width:1024px) {
+        .users__item {
+            flex-basis: 26%;
+        }
+    }
+
+    @media only screen and (max-width:768px) {
+        .users__item {
+            flex-basis: 40%;
+        }
+    }*/
 </style>

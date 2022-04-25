@@ -31,7 +31,6 @@
         max-width: 1170px;
         display: flex;
         align-items: center;
-        justify-content: flex-start;
         height: 60px;
         margin: auto;
     }
@@ -42,6 +41,26 @@
     }
     .menu div{
         margin: 0 0 0 10px;
+    }
+
+    @media only screen and (min-width:0px){
+        .menu__container {
+            padding: 0 16px;
+            justify-content: center;
+        }
+    }
+
+    @media only screen and (min-width:380px){
+        .menu__container {
+            padding: 0 32px;
+            justify-content: flex-start;
+        }
+    }
+
+    @media only screen and (min-width:1024px) {
+        .menu__container{
+            padding: 0 60px;
+        }
     }
 
 </style>

@@ -5,6 +5,7 @@
     <vUsers :scrollTo="scrollTo" :requestGET="requestGET"  ref="users"/>
     <vSignUp :requestGET="requestGET" :requestPOST="requestPOST" @renewUsers="renewUsers"/>
   </div>
+  <vFooter/>
   <router-view/>
 </template>
 
@@ -13,13 +14,15 @@
   import vHeader from "../src/components/Header"
   import vUsers from "../src/components/Users"
   import vSignUp from "../src/components/Signup"
+  import vFooter from "../src/components/Footer"
   export default {
     name: "App",
     components:{
       vMenu,
       vHeader,
       vUsers,
-      vSignUp
+      vSignUp,
+      vFooter
     },
     data (){
       return {
@@ -86,13 +89,17 @@
     font: inherit;
     vertical-align: baseline;
   }
+
+  img{
+    width:100%;
+  }
   /* HTML5 display-role reset for older browsers */
   article, aside, details, figcaption, figure,
   footer, header, hgroup, menu, nav, section {
     display: block;
   }
   body{
-    background: #E5E5E5;
+    background: #F8F8F8;
   }
   .app__content{
     max-width: 1170px;
