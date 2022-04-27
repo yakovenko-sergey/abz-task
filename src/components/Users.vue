@@ -4,6 +4,7 @@
             <vH1Title :title="'Working with GET request'"/>
         </div>
         <div class="users__container">
+            <vPreloader :showPreloader="showPreloader"/>
             <vUserItem
                     v-for="user in usersArr['users']"
                     :key="user"
@@ -28,17 +29,20 @@
     import vButton from './Button'
     import vUserItem from '../components/UserItem'
     import vH1Title from '../components/H1-Title'
+    import vPreloader from '../components/Preloader'
     export default {
         name: "Users",
         components:{
             vButton,
             vUserItem,
-            vH1Title
+            vH1Title,
+            vPreloader
         },
         props: ['scrollTo','requestToApi'],
         data(){
             return{
-                usersArr:[]
+                usersArr:[],
+                showPreloader:false
             }
         },
         mounted(){
@@ -46,9 +50,11 @@
         },
         methods:{
             getUsers(url){
+                this.showPreloader=true;
                 this.requestToApi(url).
                 then(data=>{
                     if (data.users){
+                        this.showPreloader=false;
                         for (let key in data){
                             if (this.usersArr['users'] && key==='users'){
                                 this.usersArr[key]=this.usersArr[key].concat(data[key]);
@@ -89,6 +95,7 @@
         font-weight: 400;
         font-size: 16px;
         justify-content: center;
+        position: relative;
     }
     .users__more-btn{
         width: 120px;
