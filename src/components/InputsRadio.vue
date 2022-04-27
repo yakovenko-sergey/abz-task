@@ -41,8 +41,8 @@
                         helperText: '',
                         errorText: 'Select your position please',
                         positionId:'',
-                        changeFlag: true,
-                        validation: true,
+                        changeFlag: false,
+                        validation: false,
                     },
                 }
             }

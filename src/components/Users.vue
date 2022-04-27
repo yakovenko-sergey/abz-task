@@ -35,7 +35,7 @@
             vUserItem,
             vH1Title
         },
-        props: ['scrollTo','requestGET'],
+        props: ['scrollTo','requestToApi'],
         data(){
             return{
                 usersArr:[]
@@ -46,7 +46,7 @@
         },
         methods:{
             getUsers(url){
-                this.requestGET(url).
+                this.requestToApi(url).
                 then(data=>{
                     if (data.users){
                         for (let key in data){

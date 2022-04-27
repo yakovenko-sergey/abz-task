@@ -25,7 +25,8 @@
     .footer__container{
         display: flex;
         max-width: 1170px;
-        margin: 0 0 0 50px;
+        margin: 0 auto;
+        padding-left: 50px;
         align-items: center;
         height: 60px;
 

@@ -2,8 +2,8 @@
   <vMenu :scrollTo="scrollTo"/>
   <div class="app__content">
     <vHeader :scrollTo="scrollTo"/>
-    <vUsers :scrollTo="scrollTo" :requestGET="requestGET"  ref="users"/>
-    <vSignUp :requestGET="requestGET" :requestPOST="requestPOST" @renewUsers="renewUsers"/>
+    <vUsers :scrollTo="scrollTo" :requestToApi="requestToApi"  ref="users"/>
+    <vSignUp :requestToApi="requestToApi" @renewUsers="renewUsers"/>
   </div>
   <vFooter/>
   <router-view/>
@@ -34,21 +34,7 @@
         this.$refs.users.usersArr=[];
         this.$refs.users.getUsers('https://frontend-test-assignment-api.abz.agency/api/v1/users?page=1&count=6');
       },
-      userArrCallBack(data){
-        this.users=data;
-        console.log('From CHILDREN',data)
-      },
-      async requestGET (url){
-        try{
-          const response = await fetch(url);
-          const data = await response.json();
-          return data;
-        }
-        catch (e) {
-          console.log('error',e);
-        }
-      },
-      async requestPOST (url,config){
+      async requestToApi (url,config={}){
         try{
           const response = await fetch(url,config);
           const data = await response.json();

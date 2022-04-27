@@ -69,7 +69,7 @@
     import vH1Title from '../components/H1-Title'
     export default {
         name: "Signup",
-        props:['requestGET','requestPOST','users'],
+        props:['requestToApi','users'],
         components:{
             vInput,
             vInputFile,
@@ -88,7 +88,7 @@
             }
         },
         mounted(){
-            this.requestGET('https://frontend-test-assignment-api.abz.agency/api/v1/positions').
+            this.requestToApi('https://frontend-test-assignment-api.abz.agency/api/v1/positions').
             then(data=>{
                 if (data.positions) this.positions=data.positions;
             });
@@ -105,7 +105,7 @@
                 }
             },
             addNewUser(){
-               this.requestGET('https://frontend-test-assignment-api.abz.agency/api/v1/token').
+               this.requestToApi('https://frontend-test-assignment-api.abz.agency/api/v1/token').
                then(data=>{
                        if(data.token) {
                             return data.token;
@@ -148,8 +148,8 @@
                });
             },
             failForm(){
-                for (let i=0;i<this.inputs.length;i++){
-                    this.inputs[i].changeFlag=true;
+                for (let key in this.inputs){
+                    this.inputs[key].changeFlag=true;
                 }
             }
         }
