@@ -102,7 +102,6 @@
 
 
                 subInput = input.value = "+38";
-                console.log('Length->',inputNumbersValue)
                 if (inputNumbersValue.length > 2) {
                     subInput += '(' + inputNumbersValue .substring(2, 5);
                 }
@@ -115,8 +114,6 @@
                 if (inputNumbersValue.length > 10) {
                     subInput += '-' + inputNumbersValue .substring(10, 12);
                 }
-
-                console.log(subInput);
                 this.inputProperty.phone.val=input.value=subInput;
             },
 

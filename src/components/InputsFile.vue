@@ -31,10 +31,10 @@
                         alias: 'photo',
                         placeholder: 'Upload your photo',
                         val:'',
-                        Size:70,
+                        size:5000000,
                         aspectRatio:70,
                         helperText: '',
-                        errorText: 'Size 70x70',
+                        errorText: 'image must be 70x70 and no larger than 5MB',
                         changeFlag:false,
                         validation: false,
                     },
@@ -43,7 +43,6 @@
         },
         mounted(){
             this.$props.inputsChild[this.inputProperty.file.alias]=this.inputProperty.file;
-           // this.$props.inputsChild.push(this.inputProperty.file)
         },
         methods: {
             inputUpdate(event) {
@@ -52,7 +51,8 @@
                 let img = new Image();
                 img.src=URL.createObjectURL(fileData);
                 img.onload = () => {
-                    if(img.width === this.inputProperty.file.aspectRatio && img.height === this.inputProperty.file.aspectRatio){
+                    console.log(fileData)
+                    if(img.width === this.inputProperty.file.aspectRatio && img.height === this.inputProperty.file.aspectRatio && fileData.size<=this.inputProperty.file.size){
                         this.inputProperty.file.validation=true;
                     }
                     else{
@@ -90,29 +90,27 @@
     }
     .input-file__label p{
         display: inline-block;
-        border: 1px solid rgba(0, 0, 0, 0.87);
         box-sizing: border-box;
         border-radius: 4px 0px 0px 4px;
         padding: 0 14px;
         margin: 0 16px 0 0;
     }
 
-    .input-normal,.input-normal>p{
+    .input-normal{
         border: 1px solid #D0CFCF;
     }
-
-    .input-normal ~ p{
+    .input-normal>p{
+        border-right: 1px solid #D0CFCF;
         color:#7E7E7E;
-        font-size: 12px;
     }
 
-    .input-error, .input-error>p{
+
+    .input-error{
         border: 1px solid red;
     }
-
-    .input-error ~ p{
+    .input-error>p{
+        border-right: 1px solid red;
         color:red;
-        font-size: 12px;
     }
 
     input[type="file"] {

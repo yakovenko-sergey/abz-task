@@ -23,13 +23,7 @@
 
     @media screen and (min-width:0px){
         .h1__title{
-            margin: 0 30px;
-        }
-    }
-
-    @media screen and (min-width:380px){
-        .h1__title{
-            margin:0;
+            margin: 140px 30px 0;
         }
     }
 </style>

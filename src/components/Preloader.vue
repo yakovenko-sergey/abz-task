@@ -1,5 +1,5 @@
 <template>
-    <div class="preloader__wrapper spinner"></div>
+    <div class="preloader__wrapper spinner" v-if="showPreloader"></div>
 </template>
 
 <script>
@@ -17,10 +17,11 @@
         border-top:5px solid #0c9cf3;
         border-radius: 100%;
         position: absolute;
-        bottom:100px;
+        bottom:200px;
         left:0;
         right: 0;
         margin: auto;
+        z-index: 10;
         animation: spin 1s infinite linear;
     }
 

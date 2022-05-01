@@ -2,7 +2,7 @@
     <div class="wrapper__logo-menu">
         <div class="menu__container">
             <div class="logo">
-                <img src="../assets/Logo.svg">
+                <img src="../assets/Logo.svg" width="104" height="26">
             </div>
             <nav class="menu">
                 <vButton :buttonText="'Users'" @click="scrollTo('.wrapper__users')" :enable="true"/>

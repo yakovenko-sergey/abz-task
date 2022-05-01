@@ -1,6 +1,7 @@
 <template>
     <div
-            :class="enable?'btn':'disable-btn'">
+            :class="enable?'btn':'disable-btn'"
+    >
         {{buttonText}}
     </div>
 </template>

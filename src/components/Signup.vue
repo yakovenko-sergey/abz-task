@@ -116,7 +116,7 @@
                        let inputs=this.inputs;
                        for (let key in this.inputs){
                            key=='phone' ?
-                            formData.append(this.inputs[key].alias, this.inputs[key].val.replace(/[^\d]/g, '')) :
+                            formData.append(this.inputs[key].alias, this.inputs[key].val.replace(/[^\d\\+]/g, '')) :
                             formData.append(this.inputs[key].alias, this.inputs[key].val)
                        }
                    const config={
@@ -125,7 +125,7 @@
                        headers:
                            { 'Token': token}
                    }
-                   this.requestPOST('https://frontend-test-assignment-api.abz.agency/api/v1/users',config).
+                   this.requestToApi('https://frontend-test-assignment-api.abz.agency/api/v1/users',config).
                    then(data=>{
                        console.log(data);
                        if (data.success){

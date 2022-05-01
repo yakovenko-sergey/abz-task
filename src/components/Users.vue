@@ -107,7 +107,7 @@
             margin: 0 25px;
         }
         .users__more-btn{
-            margin:49px auto 140px;
+            margin:49px auto;
         }
     }
 
@@ -135,9 +135,4 @@
             gap: 30px;
         }
     }
-
-
-
-
-
 </style>

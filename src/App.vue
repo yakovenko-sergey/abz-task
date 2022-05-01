@@ -91,4 +91,7 @@
     max-width: 1170px;
     margin: auto;
   }
+  .disclaimer{
+    display: none;
+  }
 </style>
