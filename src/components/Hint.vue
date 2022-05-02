@@ -28,7 +28,7 @@
     .hint__wrapper{
         display: block;
         position: absolute;
-        left:30px;
+        left:20px;
         white-space: break-spaces;
         max-width: 300px;
     }

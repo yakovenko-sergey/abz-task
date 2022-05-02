@@ -51,7 +51,6 @@
                 let img = new Image();
                 img.src=URL.createObjectURL(fileData);
                 img.onload = () => {
-                    console.log(fileData)
                     if(img.width === this.inputProperty.file.aspectRatio && img.height === this.inputProperty.file.aspectRatio && fileData.size<=this.inputProperty.file.size){
                         this.inputProperty.file.validation=true;
                     }

@@ -125,6 +125,7 @@
             },
 
             inputValidate(){
+                //pattern data validation
                 this.inputProperty[this.inputProp].changeFlag=true;
                 let pattern=new RegExp(this.inputProperty[this.inputProp].pattern);
                (pattern.test(this.inputProperty[this.inputProp].val))?

@@ -6,7 +6,6 @@
     <vSignUp :requestToApi="requestToApi" @renewUsers="renewUsers"/>
   </div>
   <vFooter/>
-  <router-view/>
 </template>
 
 <script>
@@ -30,11 +29,11 @@
       }
     },
     methods:{
-      renewUsers(){
+      renewUsers(){                                                                                                     //method is called after successful registration of a new user
         this.$refs.users.usersArr=[];
         this.$refs.users.getUsers('https://frontend-test-assignment-api.abz.agency/api/v1/users?page=1&count=6');
       },
-      async requestToApi (url,config={}){
+      async requestToApi (url,config={}){                                                                               //method to work with GET/POST request
         try{
           const response = await fetch(url,config);
           const data = await response.json();
@@ -44,7 +43,7 @@
           console.log('error',e);
         }
       },
-      scrollTo(goto){
+      scrollTo(goto){                                                                                                   //Scroll the page to a DOM element.
           document.querySelector(goto).scrollIntoView({
           behavior: "smooth",
           block: "start"

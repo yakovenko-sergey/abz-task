@@ -95,6 +95,7 @@
         },
         methods:{
             inputUpdate(data){
+                //Checking all data for compliance with validation. If all data is correct, the Sign up button becomes active.
                 console.log(data);
                 for (let key in this.inputs){
                     if (!this.inputs[key].validation){
@@ -115,6 +116,8 @@
                        let formData = new FormData();
                        let inputs=this.inputs;
                        for (let key in this.inputs){
+                           //if the key is a phone, cut off all the signs except for numbers and plus.
+                             // The server receives data in the format +380XXXXXXXXX
                            key=='phone' ?
                             formData.append(this.inputs[key].alias, this.inputs[key].val.replace(/[^\d\\+]/g, '')) :
                             formData.append(this.inputs[key].alias, this.inputs[key].val)
@@ -127,7 +130,6 @@
                    }
                    this.requestToApi('https://frontend-test-assignment-api.abz.agency/api/v1/users',config).
                    then(data=>{
-                       console.log(data);
                        if (data.success){
                            this.$emit('renewUsers');
                            this.successReg=true;
